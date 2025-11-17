@@ -1,0 +1,36 @@
+- name: Checking to see if the PGP key is already present
+  ansible.builtin.stat:
+    path: /usr/share/keyrings/{{ apt_repo_key_filename }}
+  register: keyring
+
+- name: Download repo signing key
+  ansible.builtin.get_url:
+    url: "{{ apt_repo_key_url }}"
+    checksum: "{{ apt_key_checksum }}"
+    dest: /usr/share/keyrings/{{ apt_repo_key_filename }}
+    mode: '644'
+  when: not keyring.stat.exists"
+  notify: Update apt cache to include the new repo
+
+- name: Add repository into sources list
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/{{ apt_repo_key_filename }}] \
+          {{ apt_repo_url }} {{ apt_repo_codename }} \
+          {{ apt_repo_components | join(' ') }}"
+  notify: Update apt cache to include the new repo
+
+- name: Pin repo so it can only install authorized packages
+  when: "'origin' in apt_repo_pinning and \
+         'packages' in apt_repo_pinning and \
+         'filename' in apt_repo_pinning"
+  ansible.builtin.copy:
+    content: |
+      Pin: origin "{{ apt_repo_pinning["origin"] }}"
+      Package: {{ apt_repo_pinning["packages"] | join(" ") }}
+      Pin-Priority: 1000
+
+      Pin: origin "{{ apt_repo_pinning["origin"] }}"
+      Package: *
+      Pin-Priority: -1
+    dest: /etc/apt/preferences.d/{{ apt_repo_pinning["filename"] }}
+    mode: '644'

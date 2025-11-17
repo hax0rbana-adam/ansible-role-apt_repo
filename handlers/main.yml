@@ -1,0 +1,3 @@
+- name: Update apt cache to include the new repo
+  ansible.builtin.package:
+    update_cache: true

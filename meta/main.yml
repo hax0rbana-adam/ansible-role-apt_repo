@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: Adam
+  description: Install 3rd party apt repositories easily & securely
+  license: MIT
+  min_ansible_version: "2.7"
+  platforms:
+    - name: Debian
+      versions:
+        - trixie
+  galaxy_tags:
+    - debian
+    - apt
+  role_name: apt_repo
+  namespace: hax0rbana_adam
+
+dependencies: []

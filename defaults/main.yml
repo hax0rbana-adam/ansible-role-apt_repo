@@ -1,0 +1,16 @@
+# Your key filename should end in .asc if armored, and .gpg if not
+apt_repo_key_filename: hax0rbana.gpg
+apt_repo_key_url: https://repo.hax0rbana.org/debs/KEY.gpg
+apt_repo_key_checksum: sha256:72b6a66ad3b1f20b008aa3867b6f7288cf42166e03d012d8b8fb96d8fd869fef
+apt_repo_url: https://repo.hax0rbana.org/debian
+apt_repo_components:
+  - main
+apt_repo_codename: "{{ ansible_lsb.codename }}"
+
+# If you want to limit the apt repo to only be able to install specific
+# packages (highly recommended), fill out the apt_repo_pinning dictionary.
+apt_repo_pinning:
+#  origin: updates.signal.org
+#  packages:
+#    - signal-desktop
+#  filename: signal-desktop
