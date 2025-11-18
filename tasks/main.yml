@@ -1,4 +1,5 @@
 - name: Checking to see if the PGP key is already present
+  when: apt_repo_has_key
   ansible.builtin.stat:
     path: /usr/share/keyrings/{{ apt_repo_key_filename }}
   register: keyring
@@ -9,12 +10,12 @@
     checksum: "{{ apt_repo_key_checksum }}"
     dest: /usr/share/keyrings/{{ apt_repo_key_filename }}
     mode: '644'
-  when: not keyring.stat.exists
+  when: not keyring.stat.exists and apt_repo_has_key
   notify: Update apt cache to include the new repo
 
 - name: Add repository into sources list
   ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/usr/share/keyrings/{{ apt_repo_key_filename }}] \
+    repo: "deb {{ '[signed-by=/usr/share/keyrings/{{ apt_repo_key_filename }}]' if apt_repo_has_key }} \
           {{ apt_repo_url }} {{ apt_repo_codename }} \
           {{ apt_repo_components | join(' ') }}"
   notify: Update apt cache to include the new repo
