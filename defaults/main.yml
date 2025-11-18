@@ -16,6 +16,6 @@ apt_repo_pinning:
 #  filename: signal-desktop
 
 # Calculated variables
-apt_repo_has_key: "apt_repo_key_filename | length > 0 and \
+apt_repo_has_key: "{{ apt_repo_key_filename | length > 0 and \
                    apt_repo_key_url | length > 0 and \
-                   apt_repo_key_checksum | length > 0"
+                   apt_repo_key_checksum | length > 0 }}"

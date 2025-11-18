@@ -15,7 +15,7 @@
 
 - name: Add repository into sources list
   ansible.builtin.apt_repository:
-    repo: "deb {{ '[signed-by=/usr/share/keyrings/{{ apt_repo_key_filename }}]' if apt_repo_has_key | bool}} \
+    repo: "deb {{ '[signed-by=/usr/share/keyrings/' + apt_repo_key_filename + ']' if apt_repo_has_key | bool}} \
           {{ apt_repo_url }} {{ apt_repo_codename }} \
           {{ apt_repo_components | join(' ') }}"
   notify: Update apt cache to include the new repo
