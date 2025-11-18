@@ -10,7 +10,7 @@
     checksum: "{{ apt_repo_key_checksum }}"
     dest: /usr/share/keyrings/{{ apt_repo_key_filename }}
     mode: '644'
-  when: not keyring.stat.exists and apt_repo_has_key | bool
+  when: "'stat' in keyring and not keyring.stat.exists and apt_repo_has_key | bool"
   notify: Update apt cache to include the new repo
 
 - name: Add repository into sources list
