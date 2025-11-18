@@ -6,7 +6,7 @@
 - name: Download repo signing key
   ansible.builtin.get_url:
     url: "{{ apt_repo_key_url }}"
-    checksum: "{{ apt_key_checksum }}"
+    checksum: "{{ apt_repo_key_checksum }}"
     dest: /usr/share/keyrings/{{ apt_repo_key_filename }}
     mode: '644'
   when: not keyring.stat.exists
