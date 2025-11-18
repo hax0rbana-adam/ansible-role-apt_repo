@@ -21,9 +21,9 @@
 
 - name: Pin repo so it can only install authorized packages
   when: "apt_repo_pinning is defined and \
-         'origin' in apt_repo_pinning and \
-         'packages' in apt_repo_pinning and \
-         'filename' in apt_repo_pinning"
+         apt_repo_pinning['origin'] is defined and \
+         apt_repo_pinning['packages'] is defined and \
+         apt_repo_pinning['filename'] is defined"
   ansible.builtin.copy:
     content: |
       Pin: origin "{{ apt_repo_pinning["origin"] }}"
